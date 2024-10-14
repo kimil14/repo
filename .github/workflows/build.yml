@@ -41,7 +41,3 @@ jobs:
         with:
           name: warfull-launcher-${{ matrix.os }}
           path: dist
-          
-      - name: Copy artifact to dist directory
-        run: |
-          cp -r ./dist/* ./dist/
