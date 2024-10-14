@@ -44,5 +44,4 @@ jobs:
           
       - name: Copy artifact to dist directory
         run: |
-          mkdir -p dist  # Crée le dossier dist à la racine si inexistant
-          cp -r ./out/* ./dist/  # Copie les artifacts générés vers le dossier dist
+          cp -r ./out/* ./dist/
