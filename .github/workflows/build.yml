@@ -42,8 +42,7 @@ jobs:
           name: warfull-launcher-${{ matrix.os }}
           path: dist
           
-      - name: Copy artifacts to dist
+      - name: Copy artifact to dist directory
         run: |
-          mkdir -p $GITHUB_WORKSPACE/dist
-          cp -R dist/* $GITHUB_WORKSPACE/dist/
-        if: success()
+          mkdir -p dist  # Crée le dossier dist à la racine si inexistant
+          cp -r ./out/* ./dist/  # Copie les artifacts générés vers le dossier dist
