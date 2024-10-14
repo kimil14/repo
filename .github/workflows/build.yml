@@ -16,11 +16,10 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
         node-version: [18.18.1]
     steps:
-        - name: Clean up node_modules (Windows)
-            if: runner.os == 'Windows'
-            run: |
-                Remove-Item -Recurse -Force ./node_modules
-                rmdir /s /q node_modules
+      - name: Clean up node_modules (Windows)
+        run: |
+           Remove-Item -Recurse -Force ./node_modules
+           rmdir /s /q node_modules
       - name: Checkout repository
         uses: actions/checkout@v3
 
