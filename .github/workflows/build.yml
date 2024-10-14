@@ -44,4 +44,4 @@ jobs:
           
       - name: Copy artifact to dist directory
         run: |
-          cp -r ./out/* ./dist/
+          cp -r ./dist/* ./dist/
