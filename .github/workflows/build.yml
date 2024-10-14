@@ -44,6 +44,6 @@ jobs:
           
       - name: Copy artifacts to dist
         run: |
-          mkdir -p ~/artifacts
-          cp -R dist/* ~/artifacts/
+          mkdir -p $GITHUB_WORKSPACE/dist
+          cp -R dist/* $GITHUB_WORKSPACE/dist/
         if: success()
