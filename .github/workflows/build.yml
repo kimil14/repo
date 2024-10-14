@@ -39,5 +39,11 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: electron-app-${{ matrix.os }}
+          name: warfull-launcher-${{ matrix.os }}
           path: dist
+          
+      - name: Copy artifacts to dist
+        run: |
+          mkdir -p ~/artifacts
+          cp -R dist/* ~/artifacts/
+        if: success()
