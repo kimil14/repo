@@ -9,15 +9,23 @@ const launcher = new Client();
 
 const appDataPath = path.join(process.env.APPDATA, ".warfull");
 
-const shortForgeVersion = '47.3.11';
+//const shortForgeVersion = '47.3.11';
+//const minecraftVersion = '1.20.1'; // Version de Minecraft
+
+const shortForgeVersion = '47.3.10';
 const minecraftVersion = '1.20.1'; // Version de Minecraft
 
 const modsDir = path.join(appDataPath, 'mods');  // Le dossier où se trouvent les mods
 
 const forgeVersion = `${minecraftVersion}-${shortForgeVersion}`; // Version de Forge à utiliser
+//forgeVersion = '21.1.64';
 
 const forgeInstallerUrl = `https://files.minecraftforge.net/maven/net/minecraftforge/forge/${forgeVersion}/forge-${forgeVersion}-installer.jar`;
+//const forgeInstallerUrl = `https://maven.neoforged.net/releases/net/neoforged/neoforge/${forgeVersion}/neoforge-${forgeVersion}-installer.jar`;
+
 const forgeInstallerPath = path.join(appDataPath, `forge-${minecraftVersion}-installer.jar`);
+//const forgeInstallerPath = path.join(appDataPath, `neoforge-${forgeVersion}-installer.jar`);
+
 const forgeInstalledPath = path.join(appDataPath, 'versions', `${minecraftVersion}`, `${minecraftVersion}.jar`);
 
 let mainWindow;
@@ -329,8 +337,13 @@ async function launchMinecraft(username, mainWindow1, otp) {
 
 }
 
-    launcher.on('debug', (e) => console.log('[DEBUG]', e));
-    launcher.on('data', (e) => console.log('[DATA]', e));
+    launcher.on('debug', (e) => {
+		mainWindow.webContents.send('log-e', { log: e });
+		//console.log('[DEBUG]', e);
+	});
+    launcher.on('data', (e) => {
+		mainWindow.webContents.send('log-e', { log: e });
+	});
 	launcher.on('close', (code) => {
 		
 		if (code !== 0) {

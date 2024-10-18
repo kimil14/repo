@@ -18,6 +18,7 @@
     "productName": "LauncherMinecraftWarfull",
     "files": [
       "build/**/*",
+	  "assets/**/*",
       "node_modules/**/*",
       "main.js",
       "package.json",

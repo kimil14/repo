@@ -6,16 +6,124 @@
     <title>Minecraft Launcher</title>
 
 	    <style>
+		
+			@font-face {
+				font-family: 'Good Times Rg';
+				src: url('./assets/font/GoodTimesRg-Regular.woff2') format('woff2'),
+					url('./assets/font/GoodTimesRg-Regular.woff') format('woff');
+				font-weight: normal;
+				font-style: normal;
+				font-display: swap;
+			}
+			
             body {
-                font-family: 'Arial', sans-serif;
-                background-color: #f4f4f9;
-                color: #333;
-                margin: 0;
-                display: flex;
-                flex-direction: column;
-                height: 100vh;
+				font-family: 'Good Times Rg';
+				background-color: #f4f4f9;
+				background-image: url(./assets/imgs/futuristic_background.png);
+				color: #333;
+				background-size: cover;
+				background-position: center;
+				margin: 0;
+				display: flex;
+				flex-direction: column;
+				height: 100vh;
             }
+			
+			p {
+				margin: 2px;
+				font-size:0.8em;
+			}
+			
+			a#show-register {
+				align-self: flex-start;
+				width: 100%;
+				margin: 6px;
+			}
+			
+			h1.title-content {
+				align-self: flex-start;
+				width: 100%;
+				margin:6px;
+			}
+			
+			/* Chaque section va occuper une partie flexible de la hauteur */
+			.row {
+				display: flex;
+				flex-direction: column;
+			}
 
+			/* 1ère rangée pour les onglets */
+			.tabs-container {
+				flex: 0 1 auto;  /* La rangée des onglets aura une taille fixe */
+				background-color: #f1f1f1;
+				border-bottom: 1px solid #ccc;
+			}
+
+			/* 2ème rangée pour le contenu */
+			.content-container {
+				flex: 1 1 auto;  /* Cette section occupe la majeure partie de l'écran */
+				overflow-y: auto; /* Permet de scroller si le contenu est trop grand */
+				padding: 20px;
+				background-color: #ffffff30;
+			}
+
+			/* 3ème rangée pour la progress bar */
+			.progress-container {
+				flex: 0 1 auto;  /* Taille fixe de la progress bar */
+				padding: 10px;
+				background-color: #f1f1f1;
+				border-top: 1px solid #ccc;
+			}
+			
+			 /* Styles de base pour les onglets */
+			.tab-container {
+				display: flex;
+				justify-content: flex-start;
+			}
+			.tab-button {
+				padding: 10px;
+				cursor: pointer;
+				background-color: #03e6fd;
+				border: 1px solid #ddd;
+				margin-right: 5px;
+				font-size:0.8em;
+			}
+			.tab-button.active {
+				background-color: #0086b9;
+				border-bottom: none;
+				color: white;
+			}
+			.tab-content {
+				display: none;
+				padding: 20px;
+				border-top: none;
+			}
+			.tab-content.active {
+				display: flex;
+				flex-direction: row;
+				justify-content: center;
+				align-items: center;
+				flex-wrap: wrap;
+			}
+			
+			p#login-status {
+				font-size: 0.6em;
+				color: #eb3232;
+				background: white;
+			}
+			
+			input[type="text"], input[type="password"] {
+				width: 150px;
+				height: 30px;
+				border: none;
+				background: #03e6fd;
+			}
+			button#login-button {
+				height: 30px;
+				background: #0086b9;
+				border: none;
+				color: white;
+			}
             .content {
                 display: flex;
                 flex-direction: column;
@@ -23,30 +131,40 @@
                 align-items: center; /* Centre le contenu horizontalement */
                 flex-grow: 1; /* Permet au contenu de prendre l'espace disponible */
             }
+			.content.connexion {
+				max-width: 450px;
+				width: 450px;
+				height: 160px;
+				display: flex;
+				justify-content: space-around;
+				padding: 6px;
+				background: #ffffff80;
+				border-radius: 4px;
+			}
 
             /* Container de la barre de progression */
-            .progress-container {
-                width: 80%;
-                height: 30px;
-                background-color: #e0e0e0;
-                border-radius: 15px;
-                overflow: hidden;
-                margin-bottom: 10px; /* Ajoute de l'espace en dessous de la barre de progression */
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            .progress-incontainer {
+				width: 100%;
+				height: 10px;
+				background-color: #03e6fd;
+				border-radius: 15px;
+				overflow: hidden;
+				margin-bottom: 10px;
+				box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             }
 
             /* Barre de progression */
             .progress-bar {
                 width: 0%; /* Commence vide */
                 height: 100%;
-                background-color: #4caf50;
+                background-color: #0086b9;
                 border-radius: 15px 0 0 15px;
                 transition: width 0.4s ease;
             }
 
             /* Texte de progression */
             .progress-text {
-                font-size: 1.2em;
+                font-size: 1em;
                 font-weight: bold;
                 color: #333;
                 text-align: center;
@@ -55,7 +173,7 @@
 
             /* Texte du fichier en cours de téléchargement */
             #progress-filename-text {
-                font-size: 1em;
+                font-size: 0.8em;
                 color: #666;
                 font-style: italic;
                 text-align: center;
@@ -65,8 +183,6 @@
             /* Ajuste tout pour être en bas de la page */
             .progress-wrapper {
                 width: 100%;
-                position: absolute;
-                bottom: 20px; /* Distance depuis le bas de la fenêtre */
             }
 
             /* Popup */
@@ -108,15 +224,55 @@
 </head>
 <body>
 
+    <!-- Onglets -->
+	<div class="tabs-container row">
+		<div class="tab-container">
+			<div class="tab-button active" onclick="openTab('home')">Accueil</div>
+			<div class="tab-button" onclick="openTab('settings')">Paramètres</div>
+			<div class="tab-button" onclick="openTab('logs')">Console</div>
+			<div class="tab-button" onclick="openTab('about')">À propos</div>
+		</div>
+	</div>
 
-    <div class="content">
-        <h1>Connexion à votre compte</h1>
-        <input type="text" id="username" placeholder="Nom d'utilisateur" required>
-        <input type="password" id="password" placeholder="Mot de passe" required>
-        <button id="login-button">Connexion</button>
-        <p id="login-status"></p>
-        <p><a href="#" id="show-register">Pas encore inscrit ? Inscrivez-vous ici.</a></p>
-    </div>
+    <!-- Contenu des onglets -->
+	<div class="content-container row">
+		<div id="home" class="tab-content active">
+			<!-- Ton contenu actuel -->
+			<h1 class="title-content">Bienvenue sur le Launcher Warfull</h1>
+			<p>Ceci est une nouvelle version pour lancer le client Minecraft avec les mods et les configurations necessaires au bon fonctionnement afin de jouer sur le serveur Warfull.</p>
+			
+			<div class="content perso">
+				<img src="./assets/imgs/logo_1.png" />
+			</div>
+			<div class="content connexion">
+				<h3>Connexion à votre compte</h3>
+				<div>
+					<input type="text" id="username" placeholder="Nom d'utilisateur" required>
+					<input type="password" id="password" placeholder="Mot de passe" required>
+					<button id="login-button">Connexion</button>
+					<p id="login-status"></p>
+				</div>
+				<p><a href="#" id="show-register">Pas encore inscrit ? Inscrivez-vous ici.</a></p>
+			</div>
+		</div>
+
+		<div id="settings" class="tab-content">
+			<h1 class="title-content">Paramètres</h1>
+			<p>Cette section contiendra les paramètres du launcher.</p>
+		</div>
+		
+		<div id="logs" class="tab-content">
+			<h1 class="title-content">Console</h1>
+			<p id="log">Log en attente..</p>
+		</div>
+
+		<div id="about" class="tab-content">
+			<h1 class="title-content">À propos</h1>
+			<p>Information sur le launcher.</p>
+		</div>
+	</div>
+	
+	
 
     <!-- Popup pour l'inscription -->
     <div id="register-popup" class="popup">
@@ -132,17 +288,33 @@
         </div>
     </div>
 	
-
-    <div class="progress-wrapper">
-        <div id="progress-text" class="progress-text">En attente du téléchargement...</div>
-        <div id="progress-filename-text" class="progress-text"></div>
-        <div class="progress-container">
-            <div id="progress-bar" class="progress-bar"></div>
-        </div>
-    </div>
+	<div class="progress-container row">
+		<div class="progress-wrapper">
+			<div id="progress-text" class="progress-text">En attente du téléchargement...</div>
+			<div id="progress-filename-text" class="progress-text"></div>
+			<div class="progress-incontainer">
+				<div id="progress-bar" class="progress-bar"></div>
+			</div>
+		</div>
+	</div>
 	
 
-    
+        <script>
+        // Fonction pour afficher l'onglet correspondant
+        function openTab(tabId) {
+            // Masquer tous les contenus
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            // Désactiver tous les boutons d'onglet
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(button => button.classList.remove('active'));
+
+            // Activer l'onglet sélectionné
+            document.getElementById(tabId).classList.add('active');
+            document.querySelector(`[onclick="openTab('${tabId}')"]`).classList.add('active');
+        }
+    </script>
 
 </body>
 </html>

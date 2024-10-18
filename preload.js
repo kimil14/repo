@@ -99,5 +99,16 @@ window.addEventListener('DOMContentLoaded', () => {
         document.getElementById('progress-filename-text').innerText = '';
 
     });
+	
+	
+	ipcRenderer.on('log-e', (event, { log }) => {
+		const logElement = document.createElement('p');  // Créer un élément <p>
+		logElement.textContent = log;  // Ajouter le texte du log à l'élément <p>
+        document.getElementById('logs').appendChild(logElement);
+    });
+	
+	
+	
 
 });
+
