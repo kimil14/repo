@@ -15,7 +15,6 @@ const appDataPath = path.join(process.env.APPDATA, ".warfull");
 const shortForgeVersion = '47.3.10';
 const minecraftVersion = '1.20.1'; // Version de Minecraft
 
-
 const modsDir = path.join(appDataPath, 'mods');  // Le dossier où se trouvent les mods
 
 const forgeVersion = `${minecraftVersion}-${shortForgeVersion}`; // Version de Forge à utiliser
