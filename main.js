@@ -2,6 +2,7 @@ const { app, BrowserWindow, ipcMain, Menu } = require('electron');
 const path = require('path');
 const { launchMinecraft } = require('./launcher2');
 
+
 let mainWindow;
 function createWindow () {
     mainWindow = new BrowserWindow({
