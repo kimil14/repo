@@ -27,6 +27,7 @@ if (!fs.existsSync(modsDir)) {
     console.log(`Dossier créé : ${modsDir}`);
 }
 
+
 const forgeVersion = `${minecraftVersion}-${shortForgeVersion}`; // Version de Forge à utiliser
 //forgeVersion = '21.1.64';
 
