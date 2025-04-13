@@ -9,13 +9,23 @@ const launcher = new Client();
 
 const appDataPath = path.join(process.env.APPDATA, ".warfull");
 
+if (!fs.existsSync(appDataPath)) {
+    fs.mkdirSync(appDataPath, { recursive: true });
+    console.log(`Dossier créé : ${appDataPath}`);
+}
+
 //const shortForgeVersion = '47.3.11';
 //const minecraftVersion = '1.20.1'; // Version de Minecraft
 
-const shortForgeVersion = '47.3.10';
+const shortForgeVersion = '47.4.0';
 const minecraftVersion = '1.20.1'; // Version de Minecraft
 
 const modsDir = path.join(appDataPath, 'mods');  // Le dossier où se trouvent les mods
+
+if (!fs.existsSync(modsDir)) {
+    fs.mkdirSync(modsDir, { recursive: true });
+    console.log(`Dossier créé : ${modsDir}`);
+}
 
 const forgeVersion = `${minecraftVersion}-${shortForgeVersion}`; // Version de Forge à utiliser
 //forgeVersion = '21.1.64';
@@ -272,13 +282,13 @@ async function launchMinecraft(username, mainWindow1, otp) {
 
     const result = await response.json();
 
-
     //await downloadMinecraftAssets();
     await downloadForge();
+	//await installForge();
 	
 	const auth = getOfflineAuth(username);
     const opts = {
-        clientPackage: null, // Utilisé uniquement si vous avez un package personnalisé de Minecraft
+        //clientPackage: null, // Utilisé uniquement si vous avez un package personnalisé de Minecraft
 		authorization: Authenticator.getAuth(username),
         root: appDataPath,
         version: {
@@ -337,24 +347,24 @@ async function launchMinecraft(username, mainWindow1, otp) {
 
 }
 
-    launcher.on('debug', (e) => {
-		mainWindow.webContents.send('log-e', { log: e });
-		//console.log('[DEBUG]', e);
-	});
-    launcher.on('data', (e) => {
-		mainWindow.webContents.send('log-e', { log: e });
-	});
-	launcher.on('close', (code) => {
-		
-		if (code !== 0) {
-            console.log("Le jeu s'est fermé, probablement à cause du téléchargement des dépendances. code erreur: "+code+". Relance du jeu...");
-            // Relancer Minecraft après avoir téléchargé les dépendances
-            //launchMinecraft(username, mainWindow, otp);
-        }
-		console.log('Le jeu a été fermé.');
-		mainWindow.webContents.send('download-complete', {});
-	
-	});
+launcher.on('debug', (e) => {
+    mainWindow.webContents.send('log-e', { log: e });
+    //console.log('[DEBUG]', e);
+});
+launcher.on('data', (e) => {
+    mainWindow.webContents.send('log-e', { log: e });
+});
+launcher.on('close', (code) => {
+    
+    if (code !== 0) {
+        console.log("Le jeu s'est fermé, probablement à cause du téléchargement des dépendances. code erreur: "+code+". Relance du jeu...");
+        // Relancer Minecraft après avoir téléchargé les dépendances
+        //launchMinecraft(username, mainWindow, otp);
+    }
+    console.log('Le jeu a été fermé.');
+    mainWindow.webContents.send('download-complete', {});
+
+});
 	
 	
 module.exports = { launchMinecraft};

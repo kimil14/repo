@@ -82,8 +82,8 @@ async function downloadFile(url, filePath) {
 }
 
 // Téléchargement de Forge si nécessaire
-async function downloadForge(version = '1.20.6') {
-    const forgeInstallerUrl = `https://files.minecraftforge.net/maven/net/minecraftforge/forge/${version}-50.0.22/forge-${version}-50.0.22-installer.jar`;
+async function downloadForge(version = '1.20.1') {
+    const forgeInstallerUrl = `https://files.minecraftforge.net/maven/net/minecraftforge/forge/${version}-47.3.10/forge-${version}-47.3.10-installer.jar`;
     const forgeInstallerPath = path.join(appDataPath, `forge-${version}-installer.jar`);
 
     if (!fs.existsSync(forgeInstallerPath)) {
@@ -125,7 +125,7 @@ async function launchMinecraft(username) {
         authorization: auth,
         root: appDataPath,
         version: {
-            number: '1.20.6',
+            number: '1.20.1',
             type: 'release'
         },
         memory: {
